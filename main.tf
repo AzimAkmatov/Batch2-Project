@@ -13,6 +13,11 @@ module "network" {
 ###This is the module for API (Presentation layer)
 module "api" {
   source = "./api"
+  vpc_id = module.network.vpc_id
+  pub_sub_1_id = module.network.pub_sub_1_id
+  pub_sub_2_id = module.network.pub_sub_2_id
+  alb_sg = module.network.alb_sg
+  api_sg = module.network.api_sg
 }
 ###This is the module for WEB (Application layer)
 module "web" {

@@ -1,6 +1,6 @@
-1. IAM - Users, Groups, Permissions
-2. Network - VPC, Subnets, IP, SG, NACL, MFA
-3. Presentation layer - ALB, Nginx - Redirected to Application layer - Pubclic
+1. IAM - Users, Groups, Permissions - DONE
+2. Network - VPC, Subnets, IP, SG, NACL, MFA - DONE
+3. Presentation layer - ALB, Nginx - Redirected to Application layer - Pubclic - DONE
 4. Application - EC2 (ASG, Launch Templates, Snapshot, Key-pair, SG,) - Private
 5. Database layer - PostgresQL - RDS (Instance, SG) - Private
 6. Backup - DB, S3 bucket - MFA

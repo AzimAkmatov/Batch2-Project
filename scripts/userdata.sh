@@ -13,7 +13,7 @@ TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metad
 DATE_TIME=`date`
 echo "<html>
 <head>
-    <title> Congratulations! You have created an instance from Launch Template</title>
+    <title> Congratulations! You have created an instance from Launch Template in Terraform</title>
 </head>
 <body>
     <h1>This web server is launched from launch template by Devops Team</h1>
