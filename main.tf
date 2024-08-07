@@ -22,6 +22,11 @@ module "api" {
 ###This is the module for WEB (Application layer)
 module "web" {
   source = "./web"
+  vpc_id = module.network.vpc_id
+  priv_sub_1_id = module.network.priv_sub_1_id
+  priv_sub_2_id = module.network.priv_sub_2_id
+  priv_alb_sg = module.network.alb_sg
+  web_sg = module.network.api_sg
 }
 ###This is the module for DB (Database layer)
 module "db" {

@@ -11,7 +11,7 @@ resource "aws_launch_template" "project_lt" {
     instance_initiated_shutdown_behavior = "terminate"
     instance_type = var.instance_type
     # key_name = var.key_name
-    user_data = filebase64("./scripts/userdata.sh")
+    user_data = filebase64("./scripts/api.sh")
     network_interfaces {
         associate_public_ip_address = true
         security_groups             = [var.api_sg]

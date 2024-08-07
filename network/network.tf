@@ -172,23 +172,46 @@ resource "aws_security_group" "api_sg" {
     Name = "allow_nginx"
   }
 }
-
-###Private Security group that listens only to API EC2 for WEB
-resource "aws_security_group" "web_sg" {
+###Private Security group for Private ALB for WEB
+resource "aws_security_group" "priv_alb_sg" {
   vpc_id     = aws_vpc.project_vpc.id
-  name        = "test_ec2_sg"
-  ingress {
-    description = "SSH on port 22"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    security_groups = [aws_security_group.api_sg.id]
-  }
+  name        = "project-alb-sg"
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     security_groups = [aws_security_group.api_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+###Private Security group that listens only to API EC2 for WEB
+resource "aws_security_group" "web_sg" {
+  vpc_id     = aws_vpc.project_vpc.id
+  name        = "web_sg"
+  ingress {
+    description = "SSH on port 22"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    security_groups = [aws_security_group.priv_alb_sg.id]
+  }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    security_groups = [aws_security_group.priv_alb_sg.id]
+  }
+  ingress {
+  from_port   = 3000
+  to_port     = 3000
+  protocol    = "tcp"
+  security_groups = [aws_security_group.priv_alb_sg.id]
   }
 
   egress {

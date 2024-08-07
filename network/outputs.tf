@@ -16,6 +16,10 @@ output "pub_sub_2_id" {
 output "alb_sg" {
   value = aws_security_group.alb_sg.id
 }
+output "priv_alb_sg" {
+  value = aws_security_group.priv_alb_sg.id
+}
+
 output "api_sg" {
   value = aws_security_group.api_sg.id
 }
