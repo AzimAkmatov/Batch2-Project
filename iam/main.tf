@@ -17,8 +17,8 @@ resource "aws_iam_policy" "admin" {
   })
 }
 #This is the user
-resource "aws_iam_user" "azim-user" {
-  name = "Azim"
+resource "aws_iam_user" "project-user" {
+  name = "Project"
 }
 #This is group
 resource "aws_iam_group" "devops" {
@@ -28,7 +28,7 @@ resource "aws_iam_group" "devops" {
 resource "aws_iam_group_membership" "team" {
   name = "devops-group-membership"
   users = [
-    aws_iam_user.azim-user.name
+    aws_iam_user.project-user.name
   ]
   group = aws_iam_group.devops.name
 }
