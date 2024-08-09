@@ -12,26 +12,6 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# Private Subnet 1
-resource "aws_subnet" "private_sub_1" {
-  vpc_id     = aws_vpc.project_vpc.id
-  cidr_block = var.cidr_block_priv_sub_1
-  map_public_ip_on_launch = false
-  tags = {
-    Name = "Private_1"
-  }
-}
-
-# Private Subnet 2
-resource "aws_subnet" "private_sub_2" {
-  vpc_id     = aws_vpc.project_vpc.id
-  cidr_block = var.cidr_block_priv_sub_2
-  map_public_ip_on_launch = false
-  tags = {
-    Name = "Private_2"
-  }
-}
-
 # Public Subnet 1
 resource "aws_subnet" "public_sub_1" {
   vpc_id     = aws_vpc.project_vpc.id
@@ -55,7 +35,6 @@ resource "aws_subnet" "public_sub_2" {
     Name = "Public_2"
   }
 }
-
 
 # Internet Gateway for Public Subnet 1
 resource "aws_internet_gateway" "project_gw" {
@@ -102,6 +81,52 @@ resource "aws_nat_gateway" "pub_nat" {
   }
 }
 
+# Private Subnet 1
+resource "aws_subnet" "private_sub_1" {
+  vpc_id     = aws_vpc.project_vpc.id
+  cidr_block = var.cidr_block_priv_sub_1
+  #This will attach subnet into us-east-2a
+  availability_zone = data.aws_availability_zones.available.names[0]
+  tags = {
+    Name = "Private_1"
+  }
+}
+
+# Private Subnet 2
+resource "aws_subnet" "private_sub_2" {
+  vpc_id     = aws_vpc.project_vpc.id
+  cidr_block = var.cidr_block_priv_sub_2
+  map_public_ip_on_launch = false
+  #This will attach subnet into us-east-2a
+  availability_zone = data.aws_availability_zones.available.names[1]
+  tags = {
+    Name = "Private_2"
+  }
+}
+
+# Private Subnet 3
+resource "aws_subnet" "db_sub_1" {
+  vpc_id     = aws_vpc.project_vpc.id
+  cidr_block = var.cidr_block_priv_sub_3
+  #This will attach subnet into us-east-2a
+  availability_zone = data.aws_availability_zones.available.names[0]
+  tags = {
+    Name = "Private_3"
+  }
+}
+
+# Private Subnet 4
+resource "aws_subnet" "db_sub_2" {
+  vpc_id     = aws_vpc.project_vpc.id
+  cidr_block = var.cidr_block_priv_sub_4
+  map_public_ip_on_launch = false
+  #This will attach subnet into us-east-2a
+  availability_zone = data.aws_availability_zones.available.names[1]
+  tags = {
+    Name = "Private_4"
+  }
+}
+
 # Private Route Table for Private Subnet
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.project_vpc.id
@@ -119,6 +144,8 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private_sub_1.id
   route_table_id = aws_route_table.private_rt.id
 }
+
+
 
 ###Public Security group for ALB for API
 resource "aws_security_group" "alb_sg" {
@@ -175,7 +202,7 @@ resource "aws_security_group" "api_sg" {
 ###Private Security group for Private ALB for WEB
 resource "aws_security_group" "priv_alb_sg" {
   vpc_id     = aws_vpc.project_vpc.id
-  name        = "project-alb-sg"
+  name        = "priv-alb-sg"
   ingress {
     from_port   = 80
     to_port     = 80
@@ -222,3 +249,21 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
+### Database security Group
+resource "aws_security_group" "db_sg" {
+  vpc_id     = aws_vpc.project_vpc.id
+  name        = "db_sg"
+  ingress {
+    description = "Allows connection to DB"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    security_groups = [aws_security_group.web_sg.id]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

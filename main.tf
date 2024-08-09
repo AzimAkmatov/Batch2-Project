@@ -27,10 +27,14 @@ module "web" {
   priv_sub_2_id = module.network.priv_sub_2_id
   priv_alb_sg = module.network.alb_sg
   web_sg = module.network.api_sg
+  api_sg = module.network.api_sg
 }
 ###This is the module for DB (Database layer)
 module "db" {
   source = "./db"
+  db_subnets = module.network.db_subnets
+  web_sg = module.network.web_sg
+  db_sg = module.network.db_sg
 }
 ###This is the module for Backups
 module "backup" {

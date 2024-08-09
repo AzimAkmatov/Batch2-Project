@@ -13,6 +13,10 @@ variable "priv_alb_sg" {
 }
 variable "web_sg" {
   type = string
+  description = "This is WEB private security group"
+}
+variable "api_sg" {
+  type = string
   description = "This is API public security group"
 }
 variable "vpc_id" {
