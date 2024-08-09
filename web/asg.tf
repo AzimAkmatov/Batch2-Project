@@ -29,7 +29,7 @@ resource "aws_autoscaling_group" "web_asg" {
   desired_capacity   = 2
   max_size           = 4
   min_size           = 1
-  health_check_grace_period = 60
+  health_check_grace_period = 300
   health_check_type         = "ELB"
   force_delete              = true
   vpc_zone_identifier = [var.priv_sub_1_id, var.priv_sub_2_id]

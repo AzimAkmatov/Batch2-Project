@@ -4,7 +4,7 @@ resource "aws_lb" "priv_project_alb" {
   internal           = true
   load_balancer_type = "application"
   subnets            = [var.priv_sub_1_id, var.priv_sub_2_id]
-  security_groups    = [var.api_sg]
+  security_groups    = [var.priv_alb_sg]
   enable_deletion_protection = false
 }
 
