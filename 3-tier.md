@@ -1,3 +1,4 @@
+Build 3-tier Architecture in AWS using Terraform
 1. IAM - Users, Groups, Permissions - DONE
 2. Network - VPC, Subnets, IP, SG, NACL, MFA - DONE
 3. Presentation layer - ALB, Nginx - Redirected to Application layer - Pubclic - DONE
